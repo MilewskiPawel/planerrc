@@ -1,2 +1,2 @@
 # planerrc
-porzadki 1
+porzadki 2
