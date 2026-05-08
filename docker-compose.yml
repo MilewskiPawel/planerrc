@@ -1,7 +1,7 @@
 services:
   planer-rc:
     image: nightec/planer-rc:latest
-    container_name: nightec/planer_rc
+    container_name: planer-rc
     ports:
       - "8124:80"
     restart: always
