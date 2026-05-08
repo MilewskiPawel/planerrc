@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   planer-rc:
-    build: .
-    container_name: planer_pogody_rc
+    
+    container_name: nightec/planer_pogody_rc
     ports:
       - "8124:80"
     restart: always
