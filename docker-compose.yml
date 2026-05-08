@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  planer-rc:
+    build: .
+    container_name: planer_pogody_rc
+    ports:
+      - "8124:80"
+    restart: always
+    # Limity zasobów
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+          cpus: '0.2'
+        reservations:
+          memory: 10M
