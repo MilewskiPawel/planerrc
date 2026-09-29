@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: apps/v1 
 kind: Deployment
 metadata:
   name: planer-rc
@@ -31,7 +31,7 @@ spec:
       containers:
       - name: planer-rc
         image: nightec/planer-rc:latest
-        ports:
+        ports: #trafia na port 8124 docelowo
         - containerPort: 80
         resources:
           requests:
