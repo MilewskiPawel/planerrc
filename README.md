@@ -1,4 +1,4 @@
-# planerrc
+# planer  rc
 
 Aplikacja do zarządzania porządkami i harmonogramami (Planer RC).
 
