@@ -5,7 +5,7 @@ metadata:
   labels:
     app: planer-rc
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: planer-rc
@@ -14,6 +14,22 @@ spec:
       labels:
         app: planer-rc
     spec:
+      # Tolerancja, żeby pod mógł legalnie wejść na węzeł control-plane
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      # Wymuszenie rozrzucenia: 1 pod na 1 node
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: "kubernetes.io/hostname"
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: planer-rc
       containers:
       - name: planer-rc
         image: nightec/planer-rc:latest
@@ -36,5 +52,5 @@ spec:
     app: planer-rc
   ports:
   - protocol: TCP
-    port: 8124          # Port na hoście w Windowsie
-    targetPort: 80      # Port wewnątrz kontenera Nginxa/apki
+    port: 8124
+    targetPort: 80
