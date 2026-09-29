@@ -33,7 +33,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: planer-rc
-        image: nightec/planer-rc:latest
+        image: nightec/planer-rc:latest888
         ports:
         - containerPort: 80
         resources:
