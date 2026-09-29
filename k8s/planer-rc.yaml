@@ -14,22 +14,20 @@ spec:
       labels:
         app: planer-rc
     spec:
-      # Tolerancja, żeby pod mógł legalnie wejść na węzeł control-plane
       tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
         effect: "NoSchedule"
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
-        effect: "NoSchedule"
-      # Wymuszenie rozrzucenia: 1 pod na 1 node
-      topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: "kubernetes.io/hostname"
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app: planer-rc
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - planer-rc
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: planer-rc
         image: nightec/planer-rc:latest
@@ -41,16 +39,3 @@ spec:
           limits:
             memory: "50Mi"
             cpu: "200m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: planer-rc-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: planer-rc
-  ports:
-  - protocol: TCP
-    port: 8124
-    targetPort: 80
