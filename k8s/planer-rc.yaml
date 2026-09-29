@@ -1,4 +1,4 @@
-apiVersion: apps/v1 
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: planer-rc
@@ -18,6 +18,9 @@ spec:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
         effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -31,7 +34,7 @@ spec:
       containers:
       - name: planer-rc
         image: nightec/planer-rc:latest
-        ports: #trafia na port 8124 docelowo
+        ports:
         - containerPort: 80
         resources:
           requests:
@@ -39,3 +42,17 @@ spec:
           limits:
             memory: "50Mi"
             cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: planer-rc-service
+spec:
+  type: NodePort
+  selector:
+    app: planer-rc
+  ports:
+  - protocol: TCP
+    port: 8124
+    targetPort: 80
+    nodePort: 30124
