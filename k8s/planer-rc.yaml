@@ -5,7 +5,7 @@ metadata:
   labels:
     app: planer-rc
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: planer-rc
