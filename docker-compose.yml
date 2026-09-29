@@ -1,6 +1,6 @@
 services:
   planer-rc:
-    image: nightec/planer-rc:latest888
+    image: nightec/planer-rc:latest
     container_name: planer-rc
     ports:
       - "8124:80"
