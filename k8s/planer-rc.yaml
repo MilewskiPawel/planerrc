@@ -14,11 +14,20 @@ spec:
       labels:
         app: planer-rc
     spec:
+      # Przypięcie na sztywno do węzła control-plane (tam, gdzie Docker mapuje port do Windowsa)
+      nodeSelector:
+        kubernetes.io/hostname: desktop-control-plane
+      # Tolerancja, żeby control-plane wpuścił poda
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
       containers:
       - name: planer-rc
         image: nightec/planer-rc:latest
         ports:
         - containerPort: 80
+          hostPort: 8124        # Bind portu bezpośrednio na maszynie węzła
         resources:
           requests:
             memory: "10Mi"
