@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planer-rc
+  labels:
+    app: planer-rc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: planer-rc
+  template:
+    metadata:
+      labels:
+        app: planer-rc
+    spec:
+      containers:
+      - name: planer-rc
+        image: nightec/planer-rc:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "10Mi"
+          limits:
+            memory: "50Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: planer-rc-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: planer-rc
+  ports:
+  - protocol: TCP
+    port: 8124          # Port na hoście w Windowsie
+    targetPort: 80      # Port wewnątrz kontenera Nginxa/apki
